@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "property_title": "An decent apartment",
+        "image_URL": "https://www.gatewayapartments.com.hk/files/slider-room-1br-studyroom_0.jpg",
+        "estate": "Laguna City",
+        "bedrooms": 3,
+        "gross_area": 900,
+        "expected_tenants": 5,
+        "rent": 3500
+    },
+    {
+        "id": 2,
+        "property_title": "Best Price for Lease",
+        "image_URL": "https://hintegro.com/wp-content/uploads/2017/08/ken_025016_PSD.jpg",
+        "estate": "Festival City",
+        "bedrooms": 3,
+        "gross_area": 700,
+        "expected_tenants": 5,
+        "rent": 21000
+    }
+]

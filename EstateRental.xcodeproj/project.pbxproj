@@ -9,12 +9,19 @@
 /* Begin PBXBuildFile section */
 		8D37D1952551013F0059FCB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1942551013F0059FCB8 /* AppDelegate.swift */; };
 		8D37D1972551013F0059FCB8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1962551013F0059FCB8 /* SceneDelegate.swift */; };
-		8D37D1992551013F0059FCB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1982551013F0059FCB8 /* ViewController.swift */; };
 		8D37D19C2551013F0059FCB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D37D19A2551013F0059FCB8 /* Main.storyboard */; };
 		8D37D19E255101400059FCB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D37D19D255101400059FCB8 /* Assets.xcassets */; };
 		8D37D1A1255101400059FCB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8D37D19F255101400059FCB8 /* LaunchScreen.storyboard */; };
 		8D37D1AC255101400059FCB8 /* EstateRentalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1AB255101400059FCB8 /* EstateRentalTests.swift */; };
 		8D37D1B7255101400059FCB8 /* EstateRentalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1B6255101400059FCB8 /* EstateRentalUITests.swift */; };
+		8D37D1D3255137DA0059FCB8 /* EstateLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1D2255137DA0059FCB8 /* EstateLocation.swift */; };
+		8D37D1E0255139DB0059FCB8 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1DF255139DB0059FCB8 /* MapViewController.swift */; };
+		8D37D1E8255160650059FCB8 /* Estate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1E7255160650059FCB8 /* Estate.swift */; };
+		8D37D1ED255163B30059FCB8 /* EstateTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1EC255163B30059FCB8 /* EstateTableViewController.swift */; };
+		8D37D1F2255168F60059FCB8 /* EstateChoiceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D37D1F1255168F60059FCB8 /* EstateChoiceTableViewController.swift */; };
+		8D4638D72553E82E00765618 /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4638D62553E82E00765618 /* HomeTableViewController.swift */; };
+		8D4638DC2553E96200765618 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4638DB2553E96200765618 /* NetworkController.swift */; };
+		8D4638E12553EB7D00765618 /* estates.json in Resources */ = {isa = PBXBuildFile; fileRef = 8D4638E02553EB7D00765618 /* estates.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +45,6 @@
 		8D37D1912551013F0059FCB8 /* EstateRental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EstateRental.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D37D1942551013F0059FCB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8D37D1962551013F0059FCB8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8D37D1982551013F0059FCB8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8D37D19B2551013F0059FCB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8D37D19D255101400059FCB8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D37D1A0255101400059FCB8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +55,14 @@
 		8D37D1B2255101400059FCB8 /* EstateRentalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EstateRentalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D37D1B6255101400059FCB8 /* EstateRentalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateRentalUITests.swift; sourceTree = "<group>"; };
 		8D37D1B8255101400059FCB8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D37D1D2255137DA0059FCB8 /* EstateLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateLocation.swift; sourceTree = "<group>"; };
+		8D37D1DF255139DB0059FCB8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		8D37D1E7255160650059FCB8 /* Estate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Estate.swift; sourceTree = "<group>"; };
+		8D37D1EC255163B30059FCB8 /* EstateTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateTableViewController.swift; sourceTree = "<group>"; };
+		8D37D1F1255168F60059FCB8 /* EstateChoiceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateChoiceTableViewController.swift; sourceTree = "<group>"; };
+		8D4638D62553E82E00765618 /* HomeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		8D4638DB2553E96200765618 /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
+		8D4638E02553EB7D00765618 /* estates.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = estates.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +115,15 @@
 			children = (
 				8D37D1942551013F0059FCB8 /* AppDelegate.swift */,
 				8D37D1962551013F0059FCB8 /* SceneDelegate.swift */,
-				8D37D1982551013F0059FCB8 /* ViewController.swift */,
+				8D37D1DF255139DB0059FCB8 /* MapViewController.swift */,
 				8D37D19A2551013F0059FCB8 /* Main.storyboard */,
+				8D4638DB2553E96200765618 /* NetworkController.swift */,
+				8D4638D62553E82E00765618 /* HomeTableViewController.swift */,
+				8D37D1D2255137DA0059FCB8 /* EstateLocation.swift */,
+				8D37D1E7255160650059FCB8 /* Estate.swift */,
+				8D4638E02553EB7D00765618 /* estates.json */,
+				8D37D1EC255163B30059FCB8 /* EstateTableViewController.swift */,
+				8D37D1F1255168F60059FCB8 /* EstateChoiceTableViewController.swift */,
 				8D37D19D255101400059FCB8 /* Assets.xcassets */,
 				8D37D19F255101400059FCB8 /* LaunchScreen.storyboard */,
 				8D37D1A2255101400059FCB8 /* Info.plist */,
@@ -232,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D37D1A1255101400059FCB8 /* LaunchScreen.storyboard in Resources */,
+				8D4638E12553EB7D00765618 /* estates.json in Resources */,
 				8D37D19E255101400059FCB8 /* Assets.xcassets in Resources */,
 				8D37D19C2551013F0059FCB8 /* Main.storyboard in Resources */,
 			);
@@ -258,8 +280,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D37D1992551013F0059FCB8 /* ViewController.swift in Sources */,
+				8D4638DC2553E96200765618 /* NetworkController.swift in Sources */,
+				8D37D1F2255168F60059FCB8 /* EstateChoiceTableViewController.swift in Sources */,
+				8D37D1ED255163B30059FCB8 /* EstateTableViewController.swift in Sources */,
+				8D37D1E8255160650059FCB8 /* Estate.swift in Sources */,
+				8D37D1D3255137DA0059FCB8 /* EstateLocation.swift in Sources */,
 				8D37D1952551013F0059FCB8 /* AppDelegate.swift in Sources */,
+				8D4638D72553E82E00765618 /* HomeTableViewController.swift in Sources */,
+				8D37D1E0255139DB0059FCB8 /* MapViewController.swift in Sources */,
 				8D37D1972551013F0059FCB8 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
