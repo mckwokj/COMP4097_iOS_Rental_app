@@ -66,14 +66,3 @@ class NetworkController {
         task.resume()
     }
 }
-
-//struct Estates: Codable {
-//    let id: Int
-//    let property_title: String
-//    let image_URL: String
-//    let estate: String
-//    let bedrooms: Int
-//    let gross_area: Int
-//    let expected_tenants: Int
-//    let rent: Int
-//}

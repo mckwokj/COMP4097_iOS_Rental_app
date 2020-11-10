@@ -20,23 +20,26 @@ struct Estate {
 
 extension Estate: Decodable {
     
-    static var estateData: [Estate] = {
-        do {
-            guard let rawEstateData = try? Data(contentsOf: Bundle.main.bundleURL.appendingPathComponent("estates.json")) else {
-                return []
-            }
-            return try JSONDecoder().decode([Estate].self, from: rawEstateData)
-            
-        } catch {
-            print("estates.json was not found or is not decodable")
-            print(error)
-        }
-        return []
-    }()
-    
+    static var estateData: [Estate] = []
+//
+//    static var estateData: [Estate] = {
+//        do {
+//            guard let rawEstateData = try? Data(contentsOf: Bundle.main.bundleURL.appendingPathComponent("estates.json")) else {
+//                return []
+//            }
+//            return try JSONDecoder().decode([Estate].self, from: rawEstateData)
+//
+//        } catch {
+//            print("estates.json was not found or is not decodable")
+//            print(error)
+//        }
+//
+//        return []
+//    }()
+//
     static func getEstateNames() -> [String] {
         var estateName: [String] = []
-        
+
         for estate in Estate.estateData {
             if !estateName.contains(estate.estate) {
                 estateName.append(estate.estate)

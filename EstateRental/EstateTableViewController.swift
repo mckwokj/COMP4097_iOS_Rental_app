@@ -6,11 +6,42 @@
 //
 
 import UIKit
+import CoreData
 
-class EstateTableViewController: UITableViewController {
+class EstateTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+    
+//    var viewContext: NSManagedObjectContext?
+//
+//    lazy var fetchedResultsController: NSFetchedResultsController<EstateManagedObject> = {
+//
+//        let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
+//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+//
+//        //        if let code = code {
+//        //            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
+//        //        }
+//
+//        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+//                                                    managedObjectContext: viewContext!,
+//                                                    sectionNameKeyPath: nil, cacheName: nil)
+//
+//        controller.delegate = self
+//
+//        do {
+//            try controller.performFetch()
+//        } catch {
+//            let nserror = error as NSError
+//            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//        }
+//
+//        return controller
+//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        viewContext = dataController.persistentContainer.viewContext
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -28,14 +59,17 @@ class EstateTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows        
-        return Estate.getEstateNames().count
+        return Estate.estateData.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EstateCell", for: indexPath)
 
         // Configure the cell...
+//        print(Estate.getEstateNames())
         cell.textLabel?.text = Estate.getEstateNames()[indexPath.row]
+        
+//        cell.textLabel?.text = fetchedResultsController.object(at: indexPath).estate
 
         return cell
     }
