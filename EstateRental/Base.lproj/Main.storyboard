@@ -239,6 +239,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQF-Ms-2vU">
                                 <rect key="frame" x="244" y="530" width="57" height="30"/>
                                 <state key="normal" title="Address"/>
+                                <connections>
+                                    <segue destination="4FQ-PR-88F" kind="show" id="oX7-Nx-885"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OF3-yG-X7l"/>
@@ -280,10 +283,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="a8n-kh-tja" customClass="MapViewController">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="808"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ypn-NG-EfY">
-                                <rect key="frame" x="126" y="832" width="162" height="30"/>
+                                <rect key="frame" x="126" y="783" width="162" height="30"/>
                                 <state key="normal" title="Reset to estate location"/>
                                 <connections>
                                     <action selector="resetPosition:" destination="4FQ-PR-88F" eventType="touchUpInside" id="xQi-o7-tse"/>
@@ -301,6 +304,7 @@
                             <constraint firstItem="a8n-kh-tja" firstAttribute="centerX" secondItem="ypn-NG-EfY" secondAttribute="centerX" id="zAG-T8-EiN"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="5P0-Dm-VgY"/>
                     <connections>
                         <outlet property="mapView" destination="a8n-kh-tja" id="GQv-gg-9Ax"/>
                     </connections>

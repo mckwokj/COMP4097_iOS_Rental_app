@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import MapKit
 
 class EstateDetailViewController: UIViewController {
     
     var id: Int?
     let networkController = NetworkController()
+    var estateLocation: CLLocation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,17 +61,30 @@ class EstateDetailViewController: UIViewController {
             //            viewLabel.text = "Rent: $"+String(estates[indexPath.row].rent)
             viewLabel.text = "Rent: $"+String(Estate.estateData[id!-1].rent)+", Tenants: "+String(Estate.estateData[id!-1].expected_tenants)+", Area: "+String(Estate.estateData[id!-1].gross_area)
         }
+        
+            networkController.fetchLocations(estateName: Estate.estateData[id!-1].estate, errorHandler: {(error) in
+                self.estateLocation = nil
+                print("In MapViewController, the error is:", error)
+            }, completionHandler: {(location) in
+                self.estateLocation = location
+            })
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if let viewController = segue.destination as? MapViewController {
+            
+            viewController.estate = Estate.estateData[id!-1].estate
+            viewController.estateLocation = estateLocation
+        }
     }
-    */
+    
 
 }

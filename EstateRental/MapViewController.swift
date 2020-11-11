@@ -8,26 +8,60 @@
 import UIKit
 import MapKit
 
+//class MapViewController: UIViewController, MKAnnotation {
 class MapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
+//    var coordinate: CLLocationCoordinate2D
+    let networkController = NetworkController()
     // set initial location in HKBU
-    let campusLocation = CLLocation(latitude: 22.33787, longitude: 114.18131)
+//    let campusLocation = CLLocation(latitude: 22.33787, longitude: 114.18131)
+    var estateLocation: CLLocation?
+    var estate: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        mapView.setCenterLocation(campusLocation)
-        
-        for estate in EstateLocation.estates {
-            mapView.addAnnotation(estate)
+//        if let estate = estate {
+//            networkController.fetchLocations(estateName: estate, errorHandler: {(error) in
+//                self.estateLocation = nil
+//                print("In MapViewController, the error is:", error)
+//            }, completionHandler: {(location) in
+//                self.estateLocation = location
+//            })
+//        }
+//        
+        print("In MapViewController, the estateLocation:", self.estateLocation)
+//        
+        if let estateLocation = estateLocation {
+//            let annotation = MKPointAnnotation()
+//            annotation.coordinate = estateLocation
+            
+            print("in second if")
+            mapView.setCenterLocation(estateLocation)
+//            mapView.addAnnotation(estateLocation)
+            addAnnotations(coord: estateLocation)
+//            mapView.setCenterLocation(estateLocation)
         }
     }
 
     @IBAction func resetPosition(_ sender: UIButton) {
-        mapView.setCenterLocation(campusLocation)
+        if let estateLocation = self.estateLocation {
+            mapView.setCenterLocation(estateLocation)
+        }
     }
+    
+    func addAnnotations(coord: CLLocation){
+
+        let CLLCoordType = CLLocationCoordinate2D(latitude: coord.coordinate.latitude,
+                                                  longitude: coord.coordinate.longitude)
+        let anno = MKPointAnnotation()
+        anno.coordinate = CLLCoordType
+        anno.title = estate
+        mapView.addAnnotation(anno)
+
+        }
     
     /*
     // MARK: - Navigation
