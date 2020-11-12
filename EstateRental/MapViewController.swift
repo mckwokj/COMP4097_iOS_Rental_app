@@ -46,6 +46,11 @@ class MapViewController: UIViewController {
         }
     }
 
+    @IBAction func back(_ sender: UIButton) {
+        print("backBtn clicked")
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func resetPosition(_ sender: UIButton) {
         if let estateLocation = self.estateLocation {
             mapView.setCenterLocation(estateLocation)

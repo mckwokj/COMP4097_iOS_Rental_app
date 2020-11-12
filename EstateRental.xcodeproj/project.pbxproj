@@ -26,6 +26,11 @@
 		8D4638F025540AB900765618 /* EstateManagedObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4638EE25540AB900765618 /* EstateManagedObject+CoreDataClass.swift */; };
 		8D4638F925540AFE00765618 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4638F825540AFE00765618 /* DataController.swift */; };
 		8D4638FE25551B8D00765618 /* EstateDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4638FD25551B8D00765618 /* EstateDetailViewController.swift */; };
+		8D463903255C12E200765618 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D463902255C12E200765618 /* LoginViewController.swift */; };
+		8D463908255C4D9800765618 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D463907255C4D9700765618 /* UserViewController.swift */; };
+		8D46390D255CE7BD00765618 /* UserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D46390C255CE7BD00765618 /* UserTableViewController.swift */; };
+		8D463912255D06AB00765618 /* BedroomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D463911255D06AB00765618 /* BedroomTableViewController.swift */; };
+		8D463917255D521400765618 /* MyRentalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D463916255D521400765618 /* MyRentalTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +76,11 @@
 		8D4638EE25540AB900765618 /* EstateManagedObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EstateManagedObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8D4638F825540AFE00765618 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8D4638FD25551B8D00765618 /* EstateDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstateDetailViewController.swift; sourceTree = "<group>"; };
+		8D463902255C12E200765618 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8D463907255C4D9700765618 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		8D46390C255CE7BD00765618 /* UserTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewController.swift; sourceTree = "<group>"; };
+		8D463911255D06AB00765618 /* BedroomTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BedroomTableViewController.swift; sourceTree = "<group>"; };
+		8D463916255D521400765618 /* MyRentalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRentalTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +137,11 @@
 				8D37D1962551013F0059FCB8 /* SceneDelegate.swift */,
 				8D37D1DF255139DB0059FCB8 /* MapViewController.swift */,
 				8D37D19A2551013F0059FCB8 /* Main.storyboard */,
+				8D463916255D521400765618 /* MyRentalTableViewController.swift */,
+				8D463911255D06AB00765618 /* BedroomTableViewController.swift */,
+				8D46390C255CE7BD00765618 /* UserTableViewController.swift */,
+				8D463907255C4D9700765618 /* UserViewController.swift */,
+				8D463902255C12E200765618 /* LoginViewController.swift */,
 				8D4638FD25551B8D00765618 /* EstateDetailViewController.swift */,
 				8D4638DB2553E96200765618 /* NetworkController.swift */,
 				8D4638E8255409E900765618 /* EstatesModel.xcdatamodeld */,
@@ -292,8 +307,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D463903255C12E200765618 /* LoginViewController.swift in Sources */,
+				8D463908255C4D9800765618 /* UserViewController.swift in Sources */,
 				8D4638DC2553E96200765618 /* NetworkController.swift in Sources */,
 				8D4638F925540AFE00765618 /* DataController.swift in Sources */,
+				8D463912255D06AB00765618 /* BedroomTableViewController.swift in Sources */,
 				8D37D1F2255168F60059FCB8 /* EstateChoiceTableViewController.swift in Sources */,
 				8D37D1ED255163B30059FCB8 /* EstateTableViewController.swift in Sources */,
 				8D37D1E8255160650059FCB8 /* Estate.swift in Sources */,
@@ -304,7 +322,9 @@
 				8D4638EA255409E900765618 /* EstatesModel.xcdatamodeld in Sources */,
 				8D4638FE25551B8D00765618 /* EstateDetailViewController.swift in Sources */,
 				8D37D1E0255139DB0059FCB8 /* MapViewController.swift in Sources */,
+				8D46390D255CE7BD00765618 /* UserTableViewController.swift in Sources */,
 				8D37D1972551013F0059FCB8 /* SceneDelegate.swift in Sources */,
+				8D463917255D521400765618 /* MyRentalTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

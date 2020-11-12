@@ -13,7 +13,9 @@ class EstateDetailViewController: UIViewController {
     var id: Int?
     let networkController = NetworkController()
     var estateLocation: CLLocation?
-
+    
+    @IBOutlet weak var rentalBtn: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,7 +23,13 @@ class EstateDetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        let myRentalId = UserDefaults.standard.object(forKey: "myRental") as! [Int]
         
+//        print(myRentalId)
+        if myRentalId.contains(id!) {
+//            print("inside myRentalId.contains(id!)")
+            rentalBtn.setTitle("Move-out", for: UIControl.init().state)
+        }
         
         if let imageView = view.viewWithTag(100) as? UIImageView {
             
@@ -71,6 +79,146 @@ class EstateDetailViewController: UIViewController {
     }
     
 
+    @IBAction func moveEstate(_ sender: UIButton) {
+        
+        let buttonTxt = sender.titleLabel?.text
+//        let image = UserDefaults.standard.string(forKey: "userImage")
+        let username = UserDefaults.standard.string(forKey: "username")
+        
+        guard buttonTxt != nil else {
+            print("Button text not found")
+            return
+        }
+        
+        guard username != nil else {
+            
+            let alert = UIAlertController(
+                title: "Not yet logged in",
+                message: "Please login first.",
+                preferredStyle: .alert
+            )
+
+            alert.addAction(
+                UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    print("OK button pressed!")
+                })
+            )
+
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+            
+        if (buttonTxt == "Move-in") {
+            networkController.moveIn(id: id!,
+                                     completionHandler: {(statusCode) in
+                                        if let code = statusCode {
+                                            if code == 200 {
+                                                DispatchQueue.main.async {
+                                                    let alert = UIAlertController(
+                                                        title: "Successful Move-in",
+                                                        message: "The rental has successfully been moved-out.",
+                                                        preferredStyle: .alert
+                                                    )
+
+                                                    alert.addAction(
+                                                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                            print("OK button pressed!")
+                                                        })
+                                                    )
+
+                                                    self.present(alert, animated: true, completion: nil)
+                                                    self.dismiss(animated: true, completion: nil)
+                                                }
+                                            }
+                                        }
+                                        
+                                     }, errorHandler: {(error, statusCode) in
+                                            print("error occured in move-in")
+                            //                print(error)
+                                            print(statusCode)
+                                            if let code = statusCode {
+                                                var msg: String? = nil
+                                                switch code {
+                                                case 404:
+                                                    msg = "Property not found."
+                                                case 409:
+                                                    msg = "Already rented."
+                                                case 422:
+                                                    msg = "Already Full."
+                                                default:
+                                                    msg = "Server error"
+                                                }
+                                                
+                                                DispatchQueue.main.async {
+                                                    let alert = UIAlertController(
+                                                        title: "Unsuccessful Move-in",
+                                                        message: msg,
+                                                        preferredStyle: .alert
+                                                    )
+
+                                                    alert.addAction(
+                                                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                            print("OK button pressed!")
+                                                        })
+                                                    )
+                                                    self.present(alert, animated: true, completion: nil)
+                                                }
+                                            }
+            })
+        } else if (buttonTxt == "Move-out") {
+            networkController.moveOut(id: id!,
+                                      completionHandler: {(statusCode) in
+                                        if let code = statusCode {
+                                            if code == 200 {
+                                                DispatchQueue.main.async {
+                                                    let alert = UIAlertController(
+                                                        title: "Successful Move-out",
+                                                        message: "The rental has successfully been moved-out.",
+                                                        preferredStyle: .alert
+                                                    )
+
+                                                    alert.addAction(
+                                                        UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                            print("OK button pressed!")
+                                                        })
+                                                    )
+                                                    self.present(alert, animated: true, completion: nil)
+                                                    self.dismiss(animated: true, completion: nil)
+                                                }
+                                            }
+                                        }
+                                      },
+                                      errorHandler: {(error, statusCode) in
+                                        if let code = statusCode {
+                                            var msg: String? = nil
+                                            switch code {
+                                            case 404:
+                                                msg = "Property not found."
+                                            case 409:
+                                                msg = "Nothing to delete."
+                                            default:
+                                                msg = "Server error"
+                                            }
+                                            
+                                            DispatchQueue.main.async {
+                                                let alert = UIAlertController(
+                                                    title: "Unsuccessful Move-out",
+                                                    message: msg,
+                                                    preferredStyle: .alert
+                                                )
+
+                                                alert.addAction(
+                                                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                                        print("OK button pressed!")
+                                                    })
+                                                )
+
+                                                self.present(alert, animated: true, completion: nil)
+                                            }
+                                        }})
+        }
+    }
     
     // MARK: - Navigation
 

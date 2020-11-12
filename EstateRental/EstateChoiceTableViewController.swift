@@ -36,7 +36,9 @@ class EstateChoiceTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        choices = Estate.estateData.filter {$0.estate == estate}
+        if estate != "from bedrooms table" {
+            choices = Estate.estateData.filter {$0.estate == estate}
+        }
         
         // #warning Incomplete implementation, return the number of rows
         return choices.count

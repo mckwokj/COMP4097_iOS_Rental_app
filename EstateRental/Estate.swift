@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Estate {
+struct Estate{
     let id: Int
     let property_title: String
     let image_URL: String
