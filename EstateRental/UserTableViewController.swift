@@ -43,8 +43,10 @@ class UserTableViewController: UITableViewController {
                 networkController.logout(errorHandler: {(error) in print(error)})
             }
         } else {
-            let myRentals = UserDefaults.standard.object(forKey: "rental")
-            print(myRentals)
+            print("reload myRental")
+            self.networkController.myRental(errorHandler: {(error) in print(error)})
+//            let myRentals = UserDefaults.standard.object(forKey: "myRental")
+//            print(myRentals)
         }
     }
 
@@ -115,9 +117,11 @@ class UserTableViewController: UITableViewController {
 //            })
 //        )
 //
-//        if let viewController = segue.destination as? LoginViewController {
-//            viewController.present(alert, animated: true, completion: nil)
-//        }
+        if let viewController = segue.destination as? MyRentalTableViewController {
+            networkController.myRental(errorHandler: {(error) in
+                print(error)
+            })
+        }
         
     }
     

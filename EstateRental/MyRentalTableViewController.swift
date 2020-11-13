@@ -10,10 +10,11 @@ import UIKit
 class MyRentalTableViewController: UITableViewController {
     
     var myRentals: [Estate] = []
+    let networkController = NetworkController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -30,8 +31,8 @@ class MyRentalTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        
-        if UserDefaults.standard.string(forKey: "userImage") == "user" {
+        let userImage = UserDefaults.standard.string(forKey: "userImage")
+        if userImage == "user" || userImage == nil {
             DispatchQueue.main.async {
                 let alert = UIAlertController(
                     title: "Not yet logged in",
@@ -42,11 +43,11 @@ class MyRentalTableViewController: UITableViewController {
                 alert.addAction(
                     UIAlertAction(title: "OK", style: .default, handler: { (action) in
                         print("OK button pressed!")
+                        self.dismiss(animated: true, completion: nil)
                     })
                 )
                 self.present(alert, animated: true, completion: nil)
             }
-            self.dismiss(animated: true, completion: nil)
         }
         else if (UserDefaults.standard.object(forKey: "myRental") as! [Int]).count == 0{
             DispatchQueue.main.async {
@@ -59,14 +60,14 @@ class MyRentalTableViewController: UITableViewController {
                 alert.addAction(
                     UIAlertAction(title: "OK", style: .default, handler: { (action) in
                         print("OK button pressed!")
+                        self.dismiss(animated: true, completion: nil)
                     })
                 )
                 self.present(alert, animated: true, completion: nil)
             }
-            self.dismiss(animated: true, completion: nil)
         }
         
-        return (UserDefaults.standard.object(forKey: "myRental") as! [Int]).count
+        return (UserDefaults.standard.object(forKey: "myRental") as? [Int])?.count ?? 0
     }
 
     
@@ -79,11 +80,18 @@ class MyRentalTableViewController: UITableViewController {
         
         cell.textLabel?.text = myRentals[indexPath.row].property_title
         cell.detailTextLabel?.text = myRentals[indexPath.row].estate
+        
+        print(myRentals)
 
         return cell
     }
     
-
+    
+    @IBAction func back(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

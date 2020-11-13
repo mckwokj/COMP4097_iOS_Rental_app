@@ -47,7 +47,8 @@ class DataController {
                         if self.shouldSeedDatabase {
                         // call seedData after fetching estate data
                             self.seedData()
-                        //                self.tableView.reloadData()
+                            print("seedData")
+//                            self.tableView.reloadData()
                         }
                     }
                 }) {(error) in

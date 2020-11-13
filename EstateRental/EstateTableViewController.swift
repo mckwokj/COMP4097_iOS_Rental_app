@@ -10,35 +10,40 @@ import CoreData
 
 class EstateTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
-//    var viewContext: NSManagedObjectContext?
-//
-//    lazy var fetchedResultsController: NSFetchedResultsController<EstateManagedObject> = {
-//
-//        let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
-//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
-//
-//        //        if let code = code {
-//        //            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
-//        //        }
-//
-//        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-//                                                    managedObjectContext: viewContext!,
-//                                                    sectionNameKeyPath: nil, cacheName: nil)
-//
-//        controller.delegate = self
-//
-//        do {
-//            try controller.performFetch()
-//        } catch {
-//            let nserror = error as NSError
-//            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-//        }
-//
-//        return controller
-//    }()
+    var viewContext: NSManagedObjectContext?
+    
+    var estateName: [String] = []
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<EstateManagedObject> = {
+        
+        let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+        //        if let code = code {
+        //            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
+        //        }
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: viewContext!,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        viewContext = dataController.persistentContainer.viewContext
         
 //        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
 //        viewContext = dataController.persistentContainer.viewContext
@@ -58,8 +63,17 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows        
-        return Estate.estateData.count
+        // #warning Incomplete implementation, return the number of rows
+//        print(Estate.estateData.count)
+        
+        fetchedResultsController.fetchedObjects?.forEach {
+            if (!estateName.contains($0.estate!)) {
+                estateName.append($0.estate!)
+            }
+        }
+
+        print(estateName.count)
+        return estateName.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -67,7 +81,8 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
 
         // Configure the cell...
 //        print(Estate.getEstateNames())
-        cell.textLabel?.text = Estate.getEstateNames()[indexPath.row]
+//        cell.textLabel?.text = Estate.getEstateNames()[indexPath.row]
+        cell.textLabel?.text = estateName[indexPath.row]
         
 //        cell.textLabel?.text = fetchedResultsController.object(at: indexPath).estate
 
@@ -121,7 +136,8 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
             
             let selectedIndex = tableView.indexPathForSelectedRow!
             
-            viewController.estate = Estate.getEstateNames()[selectedIndex.row]
+//            viewController.estate = Estate.getEstateNames()[selectedIndex.row]
+            viewController.estate = estateName[selectedIndex.row]
         }
     }
     

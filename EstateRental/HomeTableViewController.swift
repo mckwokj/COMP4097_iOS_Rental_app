@@ -40,11 +40,30 @@ class HomeTableViewController: UITableViewController{
         return controller
     }()
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        print("viewWillAppear")
+//        print(animated)
+//
+//        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        viewContext = dataController.persistentContainer.viewContext
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("viewDidLoad")
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:  #selector(reloadEstate), for: UIControl.Event.valueChanged)
+
+        self.refreshControl = refreshControl
+        
         let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
         viewContext = dataController.persistentContainer.viewContext
+        
+//        self.tableView.reloadData()
         
         //        networkController.fetchEstates(completionHandler: {(estates) in
         //            DispatchQueue.main.async {
@@ -69,6 +88,7 @@ class HomeTableViewController: UITableViewController{
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        print(fetchedResultsController.fetchedObjects)
         return 1
     }
     
@@ -125,7 +145,12 @@ class HomeTableViewController: UITableViewController{
         return cell
     }
     
-    
+    @objc func reloadEstate() {
+            
+        self.tableView.reloadData()
+        
+        refreshControl?.endRefreshing()
+    }
     
     /*
      // Override to support conditional editing of the table view.
@@ -173,8 +198,8 @@ class HomeTableViewController: UITableViewController{
         if let viewController = segue.destination as? EstateDetailViewController {
             
             let selectedIndex = tableView.indexPathForSelectedRow!
-            
-            viewController.id = Estate.estateData[selectedIndex.row].id
+
+            viewController.id = Int(fetchedResultsController.object(at: selectedIndex).id)
         }
         
      }

@@ -54,6 +54,11 @@ class EstateChoiceTableViewController: UITableViewController {
         return cell
     }
     
+
+    @IBAction func back(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
     
     /*
      // Override to support conditional editing of the table view.
