@@ -14,6 +14,10 @@ class DataController {
     var estates: [Estate] = []
     var shouldSeedDatabase: Bool = false
     
+//    deinit {
+//        print("Data controller is nil")
+//    }
+    
     init(completion: @escaping() -> ()) {
         
         // Check if the database exists
@@ -24,12 +28,14 @@ class DataController {
                                             create: false).appendingPathComponent("EstatesModel.sqlite")
             
             shouldSeedDatabase = !FileManager.default.fileExists(atPath: databaseUrl.path)
+//            shouldSeedDatabase = true
         } catch {
             shouldSeedDatabase = true
         }
         
         
         persistentContainer = NSPersistentContainer(name:"EstatesModel")
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         persistentContainer.loadPersistentStores {
             (description, error) in
             
@@ -44,10 +50,10 @@ class DataController {
                         //                        self.estates = estates
                         Estate.estateData = estates
                         
+                        print("Should seed DB",self.shouldSeedDatabase)
                         if self.shouldSeedDatabase {
                         // call seedData after fetching estate data
                             self.seedData()
-                            print("seedData")
 //                            self.tableView.reloadData()
                         }
                     }
@@ -63,12 +69,14 @@ class DataController {
         }
     }
     
-    private func seedData() {
+//    private func seedData() {
+    public func seedData() {
         
         persistentContainer.performBackgroundTask {
             (managedObjectContext) in
             
             Estate.estateData.forEach{ (estate) in
+//                print(estate)
                 let estateManagedObject = EstateManagedObject(context: managedObjectContext)
                 estateManagedObject.bedrooms = Int32(estate.bedrooms)
                 estateManagedObject.estate = estate.estate

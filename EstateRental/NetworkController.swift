@@ -14,6 +14,8 @@ class NetworkController {
         
         let url = URL(string: "https://morning-plains-00409.herokuapp.com/property/json")!
         
+//        print("fetchEstates:",url)
+        
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             if let error = error {
                 // Server error encountered
@@ -33,6 +35,7 @@ class NetworkController {
             }
             
             // Call our completion handler with our estates
+//            print(estates)
             completionHandler(estates)
         }
         task.resume()
@@ -81,31 +84,36 @@ class NetworkController {
         let task = URLSession.shared.dataTask(with: URL(string: url)!) {(data, response, error) in
             if let error = error {
                 // Server error encountered
-                print("In first")
+//                print("In first")
                 errorHandler(error)
                 return
             }
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("In second")
+//                print("In second")
                 errorHandler(error)
                 return
             }
             
             guard let estates = try? JSONDecoder().decode([EstateLocation].self, from: data!) else {
-                print("In last")
+//                print("In last")
                 errorHandler(nil)
                 return
             }
+            
+            Estate.location.append(contentsOf: estates)
         
+//            print("Display name")
+//            print(estates[0].display_name)
+            
             lat = Double(estates[0].lat)
             long = Double(estates[0].lon)
             
             if let latitude = lat, let longitude = long {
                 coordinate = CLLocation(latitude: latitude, longitude: longitude)
                 completionHandler(coordinate!)
-                print("get corrdinate")
+//                print("get corrdinate")
             }
         }
         task.resume()
@@ -132,28 +140,30 @@ class NetworkController {
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
             if let error = error {
                 // Server error encountered
-                print("first if")
+//                print("first if")
                 errorHandler(error, nil)
                 return
             }
             
-            print("Status Code")
+//            print("Status Code")
             print((response as? HTTPURLResponse)?.statusCode)
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("second if")
+//                print("second if")
                 errorHandler(error, statusCode)
                 return
             }
             
             guard let data = data, let user = try? JSONDecoder().decode(User.self, from: data) else {
-                print("last if")
+//                print("last if")
                 errorHandler(error, nil)
                 return
             }
+            
+//            print(data)
     
             // Call our completion handler with our User
             completionHandler(user)
@@ -170,17 +180,17 @@ class NetworkController {
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
             if let error = error {
                 // Server error encountered
-                print("first if")
+//                print("first if")
                 errorHandler(error)
                 return
             }
             
-            print("Status Code")
+//            print("Status Code")
             print((response as? HTTPURLResponse)?.statusCode)
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("second if")
+//                print("second if")
                 errorHandler(error)
                 return
             }
@@ -200,41 +210,41 @@ class NetworkController {
         }
         task.resume()
         
-        print("Logout already")
+//        print("Logout already")
     }
     
     func myRental (errorHandler: @escaping (Error?) -> ()) {
         var url = URL(string: "https://morning-plains-00409.herokuapp.com/user/myRentals/")!
         var request = URLRequest(url: url)
         
-        print("inside myRental")
+//        print("inside myRental")
         
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
             if let error = error {
-                print("first if")
+//                print("first if")
                 errorHandler(error)
                 return
             }
             
-            print("Status Code")
+//            print("Status Code")
             print((response as? HTTPURLResponse)?.statusCode)
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("second if")
+//                print("second if")
                 errorHandler(error)
                 return
             }
             
             guard let data = data, let estates = try? JSONDecoder().decode([Estate].self, from: data) else {
-                print("last if")
+//                print("last if")
                 errorHandler(nil)
                 return
             }
             
-            print("before saved in UserDefault")
+//            print("before saved in UserDefault")
             
             var myRentalList: [Int] = []
             
@@ -243,7 +253,7 @@ class NetworkController {
             }
             
             UserDefaults.standard.set(myRentalList, forKey: "myRental")
-            print("my rentals saved in UserDefaults")
+//            print("my rentals saved in UserDefaults")
 //            print(UserDefaults.standard.object(forKey: "myRental") as! [Int])
 //            print("In func myRental")
 //            print(estates)
@@ -254,30 +264,30 @@ class NetworkController {
     
     func moveIn (id: Int, completionHandler: @escaping (Int?) -> (), errorHandler: @escaping (Error?, Int?) -> ()){
         var url = URL(string: "https://morning-plains-00409.herokuapp.com/user/rent/\(id)")!
-        print("before request")
+//        print("before request")
         var request = URLRequest(url: url)
-        print("after request")
+//        print("after request")
         request.httpMethod = "POST"
         
 //        print(url)
         
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
-            print("inside task")
+//            print("inside task")
             if let error = error {
                 // Server error encountered
-                print("first if")
+//                print("first if")
                 errorHandler(error, nil)
                 return
             }
             
-            print("Status Code")
-            print((response as? HTTPURLResponse)?.statusCode)
+//            print("Status Code")
+//            print((response as? HTTPURLResponse)?.statusCode)
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("second if")
+//                print("second if")
                 errorHandler(error, statusCode)
                 return
             }
@@ -296,29 +306,29 @@ class NetworkController {
     
     func moveOut(id: Int, completionHandler: @escaping (Int?) -> (), errorHandler: @escaping (Error?, Int?) -> ()) {
         var url = URL(string: "https://morning-plains-00409.herokuapp.com/user/rent/\(id)")!
-        print("before request")
+//        print("before request")
         var request = URLRequest(url: url)
-        print("after request")
+//        print("after request")
         request.httpMethod = "DELETE"
         
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
 //            print("I am error", error)
-            print("inside task")
+//            print("inside task")
             if let error = error {
                 // Server error encountered
-                print("first if")
+//                print("first if")
                 errorHandler(error, nil)
                 return
             }
             
-            print("Status Code")
+//            print("Status Code")
             print((response as? HTTPURLResponse)?.statusCode)
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             
             guard let response = response as? HTTPURLResponse, response.statusCode < 300 else {
                 // Client error encountered
-                print("second if")
+//                print("second if")
                 errorHandler(error, statusCode)
                 return
             }

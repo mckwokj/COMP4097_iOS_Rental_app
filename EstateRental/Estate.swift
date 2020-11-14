@@ -21,6 +21,7 @@ struct Estate{
 extension Estate: Decodable {
     
     static var estateData: [Estate] = []
+    static var location: [EstateLocation] = []
 //
 //    static var estateData: [Estate] = {
 //        do {

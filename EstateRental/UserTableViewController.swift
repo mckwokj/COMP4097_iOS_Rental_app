@@ -43,7 +43,6 @@ class UserTableViewController: UITableViewController {
                 networkController.logout(errorHandler: {(error) in print(error)})
             }
         } else {
-            print("reload myRental")
             self.networkController.myRental(errorHandler: {(error) in print(error)})
 //            let myRentals = UserDefaults.standard.object(forKey: "myRental")
 //            print(myRentals)

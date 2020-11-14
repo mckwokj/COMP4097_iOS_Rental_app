@@ -48,7 +48,8 @@ class EstateDetailViewController: UIViewController, NSFetchedResultsControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
         
         print("id is ", id!-1)
@@ -87,7 +88,7 @@ class EstateDetailViewController: UIViewController, NSFetchedResultsControllerDe
                 }
             }) { (error) in
                 DispatchQueue.main.async {
-                    imageView.image = UIImage(named: "house.fill")
+//                    imageView.image = UIImage(named: "house.fill")
                 }
             }
             
@@ -110,13 +111,34 @@ class EstateDetailViewController: UIViewController, NSFetchedResultsControllerDe
 //            viewLabel.text = "Rent: $"+String(Estate.estateData[id!-1].rent)+", Tenants: "+String(Estate.estateData[id!-1].expected_tenants)+", Area: "+String(Estate.estateData[id!-1].gross_area)
             viewLabel.text = "Rent: $"+String(estate![0].rent)+", Tenants: "+String(estate![0].expected_tenants)+", Area: "+String(estate![0].gross_area)
         }
+//        Estate.location.forEach {
+//            $0.display_name
+//        }
         
-        networkController.fetchLocations(estateName: estate![0].estate!, errorHandler: {(error) in
-            self.estateLocation = nil
-            print("In MapViewController, the error is:", error)
-        }, completionHandler: {(location) in
-            self.estateLocation = location
-        })
+        var locationNotFound: Bool = true
+        
+        let location = Estate.location.filter {$0.display_name == estate![0].estate!}
+        
+        Estate.location.forEach {
+//            print("Location:",$0.display_name.contains(estate![0].estate!))
+            if $0.display_name.contains(estate![0].estate!) {
+                locationNotFound = false
+            }
+        }
+        
+        if locationNotFound == true {
+//            print("Location: location not in here")
+            networkController.fetchLocations(estateName: estate![0].estate!, errorHandler: {(error) in
+                self.estateLocation = nil
+                print("In MapViewController, the error is:", error)
+            }, completionHandler: {(location) in
+                self.estateLocation = location
+            })
+        } else {
+//            print("Location: location in here already")
+            let location = Estate.location.filter {$0.display_name.contains(estate![0].estate!)}
+            estateLocation = CLLocation(latitude: Double(location[0].lat)!, longitude: Double(location[0].lon)!)
+        }
     }
     
     @IBAction func back(_ sender: UIBarButtonItem) {

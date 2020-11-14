@@ -81,7 +81,7 @@ class MyRentalTableViewController: UITableViewController {
         cell.textLabel?.text = myRentals[indexPath.row].property_title
         cell.detailTextLabel?.text = myRentals[indexPath.row].estate
         
-        print(myRentals)
+//        print(myRentals)
 
         return cell
     }

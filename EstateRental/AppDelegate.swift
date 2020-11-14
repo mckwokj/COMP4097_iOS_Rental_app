@@ -10,12 +10,33 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var dataController: DataController?
+    static var dataController: DataController?
+    
+//    func application(_ application: UIApplication, willFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+//        print("willFinishLaunchingWithOptions")
+//
+//        dataController = DataController() {
+//            print("Core Data stack has been initialized.")
+//        }
+//
+//        return true
+//    }
+    
+//    func application(_ application: UIApplication, handleEventsForBackgroundURLSession: String, completionHandler: () -> Void) {
+//        
+//        print("URLSession")
+//        
+//        AppDelegate.dataController = nil
+//        
+//        AppDelegate.dataController = DataController() {
+//            print("Core Data stack has been initialized.")
+//        }
+//    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        dataController = DataController() {
+        AppDelegate.dataController = DataController() {
             print("Core Data stack has been initialized.")
         }
         

@@ -42,7 +42,8 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
         
 //        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!

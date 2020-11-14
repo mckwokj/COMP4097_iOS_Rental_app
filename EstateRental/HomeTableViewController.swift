@@ -12,6 +12,7 @@ class HomeTableViewController: UITableViewController{
     
     let networkController = NetworkController()
     var estates: [Estate] = []
+    var testImg: String?
     
     var viewContext: NSManagedObjectContext?
     
@@ -53,14 +54,13 @@ class HomeTableViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("viewDidLoad")
-        
         let refreshControl = UIRefreshControl()
+        
         refreshControl.addTarget(self, action:  #selector(reloadEstate), for: UIControl.Event.valueChanged)
-
         self.refreshControl = refreshControl
         
-        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+//        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
+        let dataController = AppDelegate.dataController!
         viewContext = dataController.persistentContainer.viewContext
         
 //        self.tableView.reloadData()
@@ -88,7 +88,6 @@ class HomeTableViewController: UITableViewController{
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        print(fetchedResultsController.fetchedObjects)
         return 1
     }
     
@@ -106,6 +105,7 @@ class HomeTableViewController: UITableViewController{
         if let imageView = cell.viewWithTag(100) as? UIImageView {
             
             var url = fetchedResultsController.object(at: indexPath).image_URL!
+            testImg = fetchedResultsController.object(at: indexPath).image_URL!
             
             if !url.contains("https") {
                 let index = url.index(url.endIndex, offsetBy: 4-url.count)
@@ -115,13 +115,14 @@ class HomeTableViewController: UITableViewController{
                 url = "https"+mySubstring
             }
             
+            
             networkController.fetchImage(for: url, completionHandler: {(data) in
                 DispatchQueue.main.async {
                     imageView.image = UIImage(data: data, scale: 1)
                 }
             }) { (error) in
                 DispatchQueue.main.async {
-                    imageView.image = UIImage(named: "house.fill")
+//                    imageView.image = UIImage(named: "house.fill")
                 }
             }
             
@@ -146,10 +147,69 @@ class HomeTableViewController: UITableViewController{
     }
     
     @objc func reloadEstate() {
-            
-        self.tableView.reloadData()
+        let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
+        viewContext = AppDelegate.dataController!.persistentContainer.viewContext
         
-        refreshControl?.endRefreshing()
+        // user fetchImage function for checking internet connection
+        guard Estate.estateData.count != 0 else {
+            DispatchQueue.main.async {
+                self.networkController.fetchEstates(completionHandler: {(estates) in
+                    DispatchQueue.main.async {
+                        Estate.estateData = estates
+                        // call seedData after fetching estate data
+                        AppDelegate.dataController?.seedData()
+                        self.tableView.reloadData()
+                    }
+                }) {(error) in
+                    DispatchQueue.main.async {
+                        Estate.estateData = []
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            self.refreshControl?.endRefreshing()
+            return
+        }
+        
+        networkController.fetchImage(for: testImg!,
+                                     completionHandler: {_ in
+                                        DispatchQueue.main.async {
+                                            if let result = try? self.viewContext?.fetch(fetchRequest) {
+                                                for object in result {
+                                                    self.viewContext?.delete(object)
+                                                }
+//                                                print("(before saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                                                try? self.viewContext?.save()
+                                                print("(after saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                                                
+                                                DispatchQueue.main.async {
+                                                    self.networkController.fetchEstates(completionHandler: {(estates) in
+                                                        DispatchQueue.main.async {
+                                                            Estate.estateData = estates
+                                                            // call seedData after fetching estate data
+                                                            AppDelegate.dataController?.seedData()
+                                                            self.tableView.reloadData()
+                                                            print("(after downloading) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                                                            
+                                                        }
+                                                    }) {(error) in
+                                                        DispatchQueue.main.async {
+                                                            Estate.estateData = []
+                                                            self.tableView.reloadData()
+                                                        }
+                                                    }             
+                                                }
+                                            
+                                            }
+                                            self.refreshControl?.endRefreshing()
+                                        }
+                                     },
+                                     errorHandler: {(error) in
+                                        DispatchQueue.main.async {
+                                            print(error)
+                                            self.refreshControl?.endRefreshing()
+                                        }
+                                     })
     }
     
     /*
@@ -208,5 +268,10 @@ class HomeTableViewController: UITableViewController{
 }
 
 extension HomeTableViewController: NSFetchedResultsControllerDelegate {
-    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                        didChange anObject: Any, at indexPath: IndexPath?,
+                        for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+            
+            tableView.reloadData()
+        }
 }
