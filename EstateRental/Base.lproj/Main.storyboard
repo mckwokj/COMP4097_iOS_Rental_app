@@ -263,6 +263,7 @@
                                 <rect key="frame" x="244" y="579" width="57" height="30"/>
                                 <state key="normal" title="Address"/>
                                 <connections>
+                                    <action selector="address:" destination="tzU-dT-1zW" eventType="touchUpInside" id="tNK-up-jPt"/>
                                     <segue destination="4FQ-PR-88F" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="oX7-Nx-885"/>
                                 </connections>
                             </button>

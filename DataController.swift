@@ -59,9 +59,9 @@ class DataController {
                     }
                 }) {(error) in
                     DispatchQueue.main.async {
-                        //                        self.estates = []
-                        Estate.estateData = []
-                        //                self.tableView.reloadData()
+//                        self.estates = []
+//                        Estate.estateData = []
+//                        self.tableView.reloadData()
                     }
                 }
                 completion()
@@ -76,6 +76,7 @@ class DataController {
             (managedObjectContext) in
             
             Estate.estateData.forEach{ (estate) in
+//                print("When saving data to EstateModels")
 //                print(estate)
                 let estateManagedObject = EstateManagedObject(context: managedObjectContext)
                 estateManagedObject.bedrooms = Int32(estate.bedrooms)
@@ -86,10 +87,18 @@ class DataController {
                 estateManagedObject.image_URL = estate.image_URL
                 estateManagedObject.property_title = estate.property_title
                 estateManagedObject.rent = Int32(estate.rent)
-                
+//                estateManagedObject.image_data =
+//                self.networkController.fetchImage(for: estate.image_URL) { (data) in
+//                    estateManagedObject.image_data = data
+//                } errorHandler: { (error) in
+//                    print(error)
+//                }
+
             }
             
             do {
+                print("This is ManagedObjectContext")
+                print(managedObjectContext)
                 try managedObjectContext.save()
             } catch {
                 print("Could not save managed object context. \(error)")

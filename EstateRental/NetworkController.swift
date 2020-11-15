@@ -7,6 +7,7 @@
 
 import Foundation
 import MapKit
+import Network
 
 class NetworkController {
     func fetchEstates(completionHandler: @escaping ([Estate]) -> (),
@@ -15,7 +16,7 @@ class NetworkController {
         let url = URL(string: "https://morning-plains-00409.herokuapp.com/property/json")!
         
 //        print("fetchEstates:",url)
-        
+                
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             if let error = error {
                 // Server error encountered
@@ -338,6 +339,23 @@ class NetworkController {
         }
         task.resume()
         
+    }
+    
+    func isOnline (completionHanlder: @escaping () -> (), errorHandler: @escaping () -> ()) {
+        let monitor = NWPathMonitor()
+        
+        monitor.pathUpdateHandler = { pathUpdateHandler in
+            if pathUpdateHandler.status == .satisfied {
+                print("Internet connection is on.")
+                completionHanlder()
+            } else {
+                print("There's no internet connection.")
+                errorHandler()
+            }
+        }
+        
+        let queue = DispatchQueue(label: "InternetConnectionMonitor")
+        monitor.start(queue: queue)
     }
 }
 

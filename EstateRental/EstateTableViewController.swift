@@ -38,6 +38,11 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
         
         return controller
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,11 +73,24 @@ class EstateTableViewController: UITableViewController, NSFetchedResultsControll
 //        print(Estate.estateData.count)
         
         fetchedResultsController.fetchedObjects?.forEach {
+            
+            guard $0.estate != nil else {
+                self.navigationController?.popToRootViewController(animated: true)
+                return
+            }
+            
             if (!estateName.contains($0.estate!)) {
                 estateName.append($0.estate!)
             }
         }
+        
+//        Estate.estateData.forEach {
+//            if (!estateName.contains($0.estate)) {
+//                estateName.append($0.estate)
+//            }
+//        }
 
+        print("EstateTableController estateName.count")
         print(estateName.count)
         return estateName.count
     }

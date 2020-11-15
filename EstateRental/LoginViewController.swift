@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func login(_ sender: Any) {
         if let username = username.text, let password = password.text {
-            networkController.login(username: "Evaleen", password: "Bend", completionHandler: {(user) in
+            networkController.login(username: username, password: password, completionHandler: {(user) in
                 
                 DispatchQueue.main.async{
                     let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))

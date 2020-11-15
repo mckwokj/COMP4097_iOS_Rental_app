@@ -12,7 +12,7 @@ class HomeTableViewController: UITableViewController{
     
     let networkController = NetworkController()
     var estates: [Estate] = []
-    var testImg: String?
+//    var testImg: String?
     
     var viewContext: NSManagedObjectContext?
     
@@ -41,7 +41,7 @@ class HomeTableViewController: UITableViewController{
         return controller
     }()
     
-//    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
 //
 //        print("viewWillAppear")
@@ -49,7 +49,8 @@ class HomeTableViewController: UITableViewController{
 //
 //        let dataController = (UIApplication.shared.delegate as? AppDelegate)!.dataController!
 //        viewContext = dataController.persistentContainer.viewContext
-//    }
+        self.tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,10 +103,11 @@ class HomeTableViewController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath)
         
         // Configure the cell...
+        
         if let imageView = cell.viewWithTag(100) as? UIImageView {
             
             var url = fetchedResultsController.object(at: indexPath).image_URL!
-            testImg = fetchedResultsController.object(at: indexPath).image_URL!
+//            testImg = fetchedResultsController.object(at: indexPath).image_URL!
             
             if !url.contains("https") {
                 let index = url.index(url.endIndex, offsetBy: 4-url.count)
@@ -119,10 +121,21 @@ class HomeTableViewController: UITableViewController{
             networkController.fetchImage(for: url, completionHandler: {(data) in
                 DispatchQueue.main.async {
                     imageView.image = UIImage(data: data, scale: 1)
+                    
+                    let id: Int = Int(self.fetchedResultsController.object(at: indexPath).id)
+                    
+                    UserDefaults.standard.set(data, forKey: "estateImage/\(id)")
                 }
             }) { (error) in
                 DispatchQueue.main.async {
-//                    imageView.image = UIImage(named: "house.fill")
+                    
+//                    UserDefaults.standard.set(data, forKey: "estateImage/\(id)")
+                    let id: Int = Int(self.fetchedResultsController.object(at: indexPath).id)
+                    let data = UserDefaults.standard.object(forKey: "estateImage/\(id)") as! Data
+                    
+                    print("imageData is:", data)
+                    
+                    imageView.image = UIImage(data: data , scale: 1)
                 }
             }
             
@@ -147,69 +160,143 @@ class HomeTableViewController: UITableViewController{
     }
     
     @objc func reloadEstate() {
+                
         let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
         viewContext = AppDelegate.dataController!.persistentContainer.viewContext
         
-        // user fetchImage function for checking internet connection
-        guard Estate.estateData.count != 0 else {
+//        guard Estate.estateData.count != 0 else {
+//            DispatchQueue.main.async {
+//                self.networkController.fetchEstates(completionHandler: {(estates) in
+//                    DispatchQueue.main.async {
+//                        Estate.estateData = estates
+//                        // call seedData after fetching estate data
+//                        AppDelegate.dataController?.seedData()
+//                        self.tableView.reloadData()
+//                    }
+//                }) {(error) in
+//                    DispatchQueue.main.async {
+//                        Estate.estateData = []
+//                        self.tableView.reloadData()
+//                    }
+//                }
+//            }
+//            self.refreshControl?.endRefreshing()
+//            return
+//        }
+        
+        networkController.isOnline(completionHanlder: {
+            print("isOnline:", true)
             DispatchQueue.main.async {
-                self.networkController.fetchEstates(completionHandler: {(estates) in
-                    DispatchQueue.main.async {
-                        Estate.estateData = estates
-                        // call seedData after fetching estate data
-                        AppDelegate.dataController?.seedData()
-                        self.tableView.reloadData()
+                if let result = try? self.viewContext?.fetch(fetchRequest) {
+                    print(result)
+                    for object in result {
+                        self.viewContext?.delete(object)
                     }
-                }) {(error) in
+                    //                                                print("(before saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                    try? self.viewContext?.save()
+                    //                                                print("(after saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                    
                     DispatchQueue.main.async {
-                        Estate.estateData = []
-                        self.tableView.reloadData()
+                        self.networkController.fetchEstates(completionHandler: {(estates) in
+                            DispatchQueue.main.async {
+                                Estate.estateData = estates
+                                // call seedData after fetching estate data
+                                AppDelegate.dataController?.seedData()
+                                self.tableView.reloadData()
+                                //                                                            print("(after downloading) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+                                
+                            }
+                        }) {(error) in
+                            DispatchQueue.main.async {
+//                                Estate.estateData = []
+//                                print(error)
+                                //                                self.tableView.reloadData()
+                                //                                self.dismiss(animated: false, completion: {
+                                let alert = UIAlertController(
+                                    title: "Refresh error",
+                                    message: "Please refresh again.",
+                                    preferredStyle: .alert
+                                )
+                                
+                                alert.addAction(
+                                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                        print("OK button pressed!")
+                                        self.refreshControl?.endRefreshing()
+                                    })
+                                )
+                                self.present(alert, animated: true, completion: nil)
+                                //                                })
+                            }
+                        }
                     }
                 }
+                self.refreshControl?.endRefreshing()
             }
-            self.refreshControl?.endRefreshing()
-            return
-        }
+        }, errorHandler: {
+            print("isOnline:", false)
+            DispatchQueue.main.async {
+                
+                //                self.dismiss(animated: false, completion: {
+                let alert = UIAlertController(
+                    title: "Network error",
+                    message: "Please check the internet connection",
+                    preferredStyle: .alert
+                )
+                
+                alert.addAction(
+                    UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        print("OK button pressed!")
+                        self.refreshControl?.endRefreshing()
+                    })
+                )
+                self.present(alert, animated: true, completion: nil)
+                //                })
+                
+                //                self.refreshControl?.endRefreshing()
+            }
+        })
         
-        networkController.fetchImage(for: testImg!,
-                                     completionHandler: {_ in
-                                        DispatchQueue.main.async {
-                                            if let result = try? self.viewContext?.fetch(fetchRequest) {
-                                                for object in result {
-                                                    self.viewContext?.delete(object)
-                                                }
-//                                                print("(before saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
-                                                try? self.viewContext?.save()
-                                                print("(after saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
-                                                
-                                                DispatchQueue.main.async {
-                                                    self.networkController.fetchEstates(completionHandler: {(estates) in
-                                                        DispatchQueue.main.async {
-                                                            Estate.estateData = estates
-                                                            // call seedData after fetching estate data
-                                                            AppDelegate.dataController?.seedData()
-                                                            self.tableView.reloadData()
-                                                            print("(after downloading) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
-                                                            
-                                                        }
-                                                    }) {(error) in
-                                                        DispatchQueue.main.async {
-                                                            Estate.estateData = []
-                                                            self.tableView.reloadData()
-                                                        }
-                                                    }             
-                                                }
-                                            
-                                            }
-                                            self.refreshControl?.endRefreshing()
-                                        }
-                                     },
-                                     errorHandler: {(error) in
-                                        DispatchQueue.main.async {
-                                            print(error)
-                                            self.refreshControl?.endRefreshing()
-                                        }
-                                     })
+        // user fetchImage function for checking internet connection
+        //        networkController.fetchImage(for: testImg!,
+//                                     completionHandler: {_ in
+//                                        DispatchQueue.main.async {
+//                                            if let result = try? self.viewContext?.fetch(fetchRequest) {
+//                                                print(result)
+//                                                for object in result {
+//                                                    self.viewContext?.delete(object)
+//                                                }
+////                                                print("(before saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+//                                                try? self.viewContext?.save()
+////                                                print("(after saving) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+//
+//                                                DispatchQueue.main.async {
+//                                                    self.networkController.fetchEstates(completionHandler: {(estates) in
+//                                                        DispatchQueue.main.async {
+//                                                            Estate.estateData = estates
+//                                                            // call seedData after fetching estate data
+//                                                            AppDelegate.dataController?.seedData()
+//                                                            self.tableView.reloadData()
+////                                                            print("(after downloading) fetchResultsController:",self.fetchedResultsController.fetchedObjects)
+//
+//                                                        }
+//                                                    }) {(error) in
+//                                                        DispatchQueue.main.async {
+//                                                            Estate.estateData = []
+//                                                            print(error)
+////                                                            self.tableView.reloadData()
+//                                                        }
+//                                                    }
+//                                                }
+//                                            }
+//                                            self.refreshControl?.endRefreshing()
+//                                        }
+//                                     },
+//                                     errorHandler: {(error) in
+//                                        DispatchQueue.main.async {
+//                                            print(error)
+//                                            self.refreshControl?.endRefreshing()
+//                                        }
+//                                     })
     }
     
     /*

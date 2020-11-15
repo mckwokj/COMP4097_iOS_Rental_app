@@ -6,14 +6,50 @@
 //
 
 import UIKit
+import CoreData
 
-class MyRentalTableViewController: UITableViewController {
+class MyRentalTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
-    var myRentals: [Estate] = []
+    var viewContext: NSManagedObjectContext?
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<EstateManagedObject> = {
+        
+        let fetchRequest = NSFetchRequest<EstateManagedObject>(entityName:"EstateManagedObject")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending:true)]
+        
+        //        if let code = code {
+        //            fetchRequest.predicate = NSPredicate(format: "dept_id = %@", code)
+        //        }
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: viewContext!,
+                                                    sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        
+        do {
+            try controller.performFetch()
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        return controller
+    }()
+    
+    var myRentals: [EstateManagedObject] = []
     let networkController = NetworkController()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dataController = AppDelegate.dataController!
+        viewContext = dataController.persistentContainer.viewContext
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -76,10 +112,16 @@ class MyRentalTableViewController: UITableViewController {
 
         // Configure the cell...
         let rentalId = UserDefaults.standard.object(forKey: "myRental") as! [Int]
-        myRentals = Estate.estateData.filter { rentalId.contains($0.id) }
         
-        cell.textLabel?.text = myRentals[indexPath.row].property_title
-        cell.detailTextLabel?.text = myRentals[indexPath.row].estate
+        myRentals = (fetchedResultsController.fetchedObjects?.filter {
+            let id = Int($0.id)
+            return rentalId.contains(id)
+        })!
+        
+        if myRentals.count != 0 {
+            cell.textLabel?.text = myRentals[indexPath.row].property_title
+            cell.detailTextLabel?.text = myRentals[indexPath.row].estate
+        }
         
 //        print(myRentals)
 
@@ -138,7 +180,7 @@ class MyRentalTableViewController: UITableViewController {
         if let viewController = segue.destination as? EstateDetailViewController {
             let selectedIndex = tableView.indexPathForSelectedRow!
 //            print(selectedIndex.row)
-            viewController.id = myRentals[selectedIndex.row].id
+            viewController.id = Int(myRentals[selectedIndex.row].id)
         }
         
     }
